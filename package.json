@@ -4,7 +4,7 @@
   "description": "JavaScript bindings for NTRU cryptography",
   "main": "main.js",
   "scripts": {
-    "install": "(node-gyp rebuild) || (exit 0)",
+    "install": "(node install.js) || (exit 0)",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
