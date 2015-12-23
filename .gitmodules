@@ -1,0 +1,3 @@
+[submodule "ntru-crypto"]
+	path = ntru-crypto
+	url = https://github.com/NTRUOpenSourceProject/ntru-crypto.git

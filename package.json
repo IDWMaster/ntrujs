@@ -1,0 +1,18 @@
+{
+  "name": "ntrujs",
+  "version": "1.0.0",
+  "description": "JavaScript bindings for NTRU cryptography",
+  "main": "main.js",
+  "scripts": {
+    "install": "(node-gyp rebuild) || (exit 0)",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NTRU",
+    "cryptography",
+    "encryption",
+    "public-key"
+  ],
+  "author": "Brian Bosak <brielcccc@gmail.com> (https://github.com/IDWMaster)",
+  "license": "GPL-3.0"
+}

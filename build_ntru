@@ -1,0 +1,8 @@
+OLDDIR=$(pwd)
+mkdir -p lib
+cd ntru-crypto/reference-code/C/Encrypt/
+./autogen.sh
+./configure --prefix=$OLDDIR/lib
+make -j32
+make install
+cd $OLDDIR
