@@ -3,7 +3,7 @@
     {
       "target_name": "addon",
       "sources": [ "module.cc"],
-      "libraries": [ "../lib/lib/NtruEncrypt_DLL.lib" ]
+      "libraries": [ "../lib/NtruEncrypt_DLL.lib" ]
     } 
   ]
 }

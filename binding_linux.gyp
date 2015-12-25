@@ -3,7 +3,7 @@
     {
       "target_name": "addon",
       "sources": [ "module.cc"],
-      "libraries": [ "-L./../lib/lib -Wl,--rpath=lib/lib -lntruencrypt" ]
+      "libraries": [ "-L./../lib -Wl,--rpath=lib -lntruencrypt" ]
     }
   ]
 }
