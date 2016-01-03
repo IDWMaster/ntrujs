@@ -73,7 +73,10 @@ void DecryptData(const FunctionCallbackInfo<Value>& args) {
   v8::Local<v8::Value> outbuffer = node::Buffer::New(isolate,outlen).ToLocalChecked();
   memset(node::Buffer::Data(outbuffer),0,outlen);
   ntru_crypto_ntru_decrypt(privlen,(unsigned char*)privkey,dlen,(unsigned char*)ptr,&outlen,(unsigned char*)node::Buffer::Data(outbuffer));
-  args.GetReturnValue().Set(outbuffer);
+  v8::Local<v8::Object> output = v8::Object::New(isolate);
+  output->Set(String::NewFromUtf8(isolate,"buffer"),outbuffer);
+  output->Set(String::NewFromUtf8(isolate,"length"),Int32::NewFromUnsigned(isolate,(uint32_t)outlen));
+  args.GetReturnValue().Set(output);
 }
 
 void init(Local<Object> exports) {
