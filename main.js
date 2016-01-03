@@ -13,6 +13,7 @@ module.exports = {
         return addon.encrypt(data, publicKey);
     },
     decrypt: function (data, privateKey) {
-        return addon.decrypt(data, privateKey);
+        var abi = addon.decrypt(data, privateKey);
+        return abi.buffer.slice(0,abi.length);
     }
 };
