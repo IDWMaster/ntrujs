@@ -1,5 +1,5 @@
 var os = require('os');
-var oldpath = process.env.PWD;
+var oldpath = process.cwd();
 process.chdir(module.filename.replace('main.js',''));
 var addon = require('./lib/addon-'+os.platform()+'-'+os.arch());
 process.chdir(oldpath);
