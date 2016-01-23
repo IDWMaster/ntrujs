@@ -10,7 +10,8 @@ module.exports = {
         return addon.genKey();
     },
     encrypt: function (data, publicKey) {
-        return addon.encrypt(data, publicKey);
+        var abi = addon.encrypt(data,publicKey);
+	return abi.buffer.slice(0,abi.length);
     },
     decrypt: function (data, privateKey) {
         var abi = addon.decrypt(data, privateKey);
