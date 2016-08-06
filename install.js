@@ -30,14 +30,15 @@ var run_installer = function () {
     });
 };
 
-if (os.platform().indexOf('win') > -1) {
-    //Windows
-    fs.copy('binding_windows.gyp', 'binding.gyp', function () {
-        run_installer();
-    });
-} else {
-    //Assume Linux for now
-    fs.copy('binding_linux.gyp', 'binding.gyp', function () {
-        run_installer();
-    });
+var src_gyp = "binding_linux.gyp";
+
+switch(os.platform()) {
+  case "win32": src_gyp = "binding_windows.gyp"; break;
+  case "darwin": src_gyp = "binding_darwin.gyp"; break;
+  default: src_gyp = "binding_linux.gyp"; break;
 }
+
+console.log('Source .gyp file: ' + src_gyp);
+fs.copy(src_gyp, 'binding.gyp', function () {
+    run_installer();
+});
