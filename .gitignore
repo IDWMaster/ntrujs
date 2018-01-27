@@ -1,2 +1,4 @@
 build
 lib
+.idea/
+node_modules
