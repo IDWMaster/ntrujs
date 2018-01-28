@@ -28,21 +28,73 @@ namespace ntru {
     DRBG_RET(DRBG_OK);
   }
   DRBG_HANDLE rand;
+  static DRBG_HANDLE seedDRBG;
+  static char *seedPtr;
+  static size_t KLENNGTH = 256; // because key size of NTRU_EES743EP1 is 256
 using namespace v8;
-void GenKey(const FunctionCallbackInfo<Value>& args) {
+
+static uint8_t
+get_entropy(
+    ENTROPY_CMD  cmd,
+    uint8_t     *out)
+{
+    /* 2k/8 bytes of entropy are needed to instantiate a DRBG with a
+     * security strength of k bits. Here k = KLENNGTH.
+     */
+    static size_t kMaxLength = KLENNGTH * 2 / 8;
+    static size_t index;
+
+    if (cmd == INIT) {
+        /* Any initialization for a real entropy source goes here. */
+        index = 0;
+        return 1;
+    }
+
+    if (out == NULL)
+        return 0;
+
+    if (cmd == GET_NUM_BYTES_PER_BYTE_OF_ENTROPY) {
+        /* Here we return the number of bytes needed from the entropy
+         * source to obtain 8 bits of entropy.  Maximum is 8.
+         */
+        *out = 1;                       /* this is a perfectly random source */
+        return 1;
+    }
+
+    if (cmd == GET_BYTE_OF_ENTROPY) {
+        if (index == kMaxLength)
+            return 0;                   /* used up all our entropy */
+
+        *out = seedPtr[index++];           /* deliver an entropy byte */
+        return 1;
+    }
+    return 0;
+}
+
+static void _GenerateKeyPair(const FunctionCallbackInfo<Value>& args, DRBG_HANDLE drbg) {
   Isolate* isolate = args.GetIsolate();
   uint16_t publen;
   uint16_t privlen;
-  ntru_crypto_ntru_encrypt_keygen(rand,NTRU_EES743EP1,&publen,0,&privlen,0);
+  ntru_crypto_ntru_encrypt_keygen(drbg, NTRU_EES743EP1, &publen,0,&privlen,0);
   uint8_t* pubkey = new uint8_t[publen];
   uint8_t* privkey = new uint8_t[privlen];
-  ntru_crypto_ntru_encrypt_keygen(rand,NTRU_EES743EP1,&publen,pubkey,&privlen,privkey);
+  ntru_crypto_ntru_encrypt_keygen(drbg, NTRU_EES743EP1,&publen,pubkey,&privlen,privkey);
   v8::Local<Object> obj = v8::Object::New(isolate);
   obj->Set(v8::String::NewFromUtf8(isolate,"private"),node::Encode(isolate,(const char*)privkey,privlen,node::encoding::BUFFER));
   obj->Set(v8::String::NewFromUtf8(isolate,"public"),node::Encode(isolate,(const char*)pubkey,publen,node::encoding::BUFFER));
   args.GetReturnValue().Set(obj);
   free(pubkey);
   free(privkey);
+}
+
+void GenKey(const FunctionCallbackInfo<Value>& args) {
+  if (args[0]->IsUndefined()) {
+    _GenerateKeyPair(args, rand);
+  } else {
+    seedPtr = node::Buffer::Data(args[0]);
+    ntru_crypto_drbg_instantiate(KLENNGTH, NULL, 0, (ENTROPY_FN) &get_entropy, &seedDRBG);
+    _GenerateKeyPair(args, seedDRBG);
+  }
 }
 void EncryptData(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
