@@ -33,12 +33,12 @@ var run_installer = function () {
 var src_gyp = "binding_linux.gyp";
 
 switch(os.platform()) {
-  case "win32": src_gyp = "binding_windows.gyp"; break;
-  case "darwin": src_gyp = "binding_darwin.gyp"; break;
-  default: src_gyp = "binding_linux.gyp"; break;
+  case "win32": src_gyp = "windows.gysrc"; break;
+  case "darwin": src_gyp = "darwin.gysrc"; break;
+  default: src_gyp = "linux.gysrc"; break;
 }
 
 console.log('Source .gyp file: ' + src_gyp);
-fs.copy(src_gyp, 'binding.gyp', function () {
+/*fs.copy(src_gyp, 'binding.gyp', function () {
     run_installer();
 });
