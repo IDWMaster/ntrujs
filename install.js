@@ -39,6 +39,6 @@ switch(os.platform()) {
 }
 
 console.log('Source .gyp file: ' + src_gyp);
-/*fs.copy(src_gyp, 'binding.gyp', function () {
+fs.copy(src_gyp, 'binding.gyp', function () {
     run_installer();
 });
