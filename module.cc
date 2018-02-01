@@ -1,6 +1,6 @@
 #include <node.h>
 #include <node_buffer.h>
-#include "ntru-crypto/reference-code/C/Encrypt/include/ntru_crypto.h"
+#include "lib/include/libntruencrypt/ntru_crypto.h"
 #include <fcntl.h>
 #ifdef __unix__
 #include <unistd.h>
