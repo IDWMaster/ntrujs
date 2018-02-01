@@ -6,8 +6,11 @@ process.chdir(oldpath);
 
 
 module.exports = {
-    createKey: function (seed) {
-        return addon.genKey(seed);
+    createKey: function () {
+        return addon.genKey();
+    },
+    createKeyWithSeed:function(seed) {
+       return addon.genKey(seed); 
     },
     encrypt: function (data, publicKey) {
         var abi = addon.encrypt(data,publicKey);
