@@ -1,6 +1,6 @@
 {
   "name": "ntrujs",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "JavaScript bindings for NTRU cryptography",
   "main": "main.js",
   "scripts": {
