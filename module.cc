@@ -89,6 +89,7 @@ static void _GenerateKeyPair(const FunctionCallbackInfo<Value>& args, DRBG_HANDL
 
 void GenKey(const FunctionCallbackInfo<Value>& args) {
   if (args[0]->IsUndefined()) {
+    ntru_crypto_drbg_external_instantiate(getRandBytes,&rand);
     _GenerateKeyPair(args, rand);
   } else {
     seedPtr = node::Buffer::Data(args[0]);
