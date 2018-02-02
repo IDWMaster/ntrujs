@@ -1,6 +1,6 @@
 #include <node.h>
 #include <node_buffer.h>
-#include "ntru-crypto/reference-code/C/Encrypt/include/ntru_crypto.h"
+#include "lib/include/libntruencrypt/ntru_crypto.h"
 #include <fcntl.h>
 #ifdef __unix__
 #include <unistd.h>
@@ -89,6 +89,7 @@ static void _GenerateKeyPair(const FunctionCallbackInfo<Value>& args, DRBG_HANDL
 
 void GenKey(const FunctionCallbackInfo<Value>& args) {
   if (args[0]->IsUndefined()) {
+    ntru_crypto_drbg_external_instantiate(getRandBytes,&rand);
     _GenerateKeyPair(args, rand);
   } else {
     seedPtr = node::Buffer::Data(args[0]);
