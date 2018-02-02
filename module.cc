@@ -95,6 +95,7 @@ void GenKey(const FunctionCallbackInfo<Value>& args) {
     seedPtr = node::Buffer::Data(args[0]);
     ntru_crypto_drbg_instantiate(KLENNGTH, NULL, 0, (ENTROPY_FN) &get_entropy, &seedDRBG);
     _GenerateKeyPair(args, seedDRBG);
+    ntru_crypto_drbg_uninstantiate(seedDRBG);
   }
 }
 void EncryptData(const FunctionCallbackInfo<Value>& args) {
