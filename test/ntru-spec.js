@@ -8,13 +8,15 @@ function toHexString(byteArray) {
 }
 
 describe('ntru test', function () {
-  it('should generate keypair', function () {
-    const keyPair = NTRU.createKey()
-    const plaintext = new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
-    const encrypted = NTRU.encrypt(plaintext, keyPair.public)
-    const decrypted = NTRU.decrypt(encrypted, keyPair.private) // same as plaintext
+  it('should generate keypair without seed', function () {
+    for (var i = 0; i < 100; ++i) {
+      const keyPair = NTRU.createKey()
+      const plaintext = new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
+      const encrypted = NTRU.encrypt(plaintext, keyPair.public)
+      const decrypted = NTRU.decrypt(encrypted, keyPair.private) // same as plaintext
 
-    assert.deepEqual(plaintext, decrypted)
+      assert.deepEqual(plaintext, decrypted)
+    }
   })
 
   it('should generate keypair', function () {

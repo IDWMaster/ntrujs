@@ -27,7 +27,7 @@ namespace ntru {
 #endif
     DRBG_RET(DRBG_OK);
   }
-  DRBG_HANDLE rand;
+  static DRBG_HANDLE rand = 0;
   static DRBG_HANDLE seedDRBG;
   static char *seedPtr;
   static size_t KLENNGTH = 256; // because key size of NTRU_EES743EP1 is 256
@@ -134,6 +134,11 @@ void DecryptData(const FunctionCallbackInfo<Value>& args) {
   output->Set(String::NewFromUtf8(isolate,"buffer"),outbuffer);
   output->Set(String::NewFromUtf8(isolate,"length"),Int32::NewFromUnsigned(isolate,(uint32_t)outlen));
   args.GetReturnValue().Set(output);
+
+  if (rand != 0) {
+    ntru_crypto_drbg_uninstantiate(rand);
+    rand = 0;
+  }
 }
 
 void init(Local<Object> exports) {
@@ -143,7 +148,6 @@ void init(Local<Object> exports) {
 #ifdef WINDOWS
   CryptAcquireContextA(&rand_fd, 0, NULL, PROV_RSA_FULL, 0);
 #endif
-  ntru_crypto_drbg_external_instantiate(getRandBytes,&rand);
   NODE_SET_METHOD(exports, "genKey", GenKey);
   NODE_SET_METHOD(exports,"encrypt",EncryptData);
   NODE_SET_METHOD(exports,"decrypt",DecryptData);
