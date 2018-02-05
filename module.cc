@@ -89,6 +89,9 @@ static void _GenerateKeyPair(const FunctionCallbackInfo<Value>& args, DRBG_HANDL
 
 void GenKey(const FunctionCallbackInfo<Value>& args) {
   if (args[0]->IsUndefined()) {
+    if (rand != 0) {
+      ntru_crypto_drbg_uninstantiate(rand);
+    }
     ntru_crypto_drbg_external_instantiate(getRandBytes,&rand);
     _GenerateKeyPair(args, rand);
   } else {

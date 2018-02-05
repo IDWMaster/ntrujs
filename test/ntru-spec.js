@@ -19,6 +19,21 @@ describe('ntru test', function () {
     }
   })
 
+  it('should ok for random order', function () {
+    const keyPair1 = NTRU.createKey()
+    const keyPair2 = NTRU.createKey()
+
+    const plaintext = new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
+    let encrypted = NTRU.encrypt(plaintext, keyPair1.public)
+    let decrypted = NTRU.decrypt(encrypted, keyPair1.private) // same as plaintext
+
+    assert.deepEqual(plaintext, decrypted)
+
+    encrypted = NTRU.encrypt(plaintext, keyPair2.public)
+    decrypted = NTRU.decrypt(encrypted, keyPair2.private) // same as plaintext
+    assert.deepEqual(plaintext, decrypted)
+  });
+
   it('should generate keypair', function () {
     const seed = new Uint8Array([11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13, 14, 15, 16, 17, 18,
       11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13, 14, 15, 16, 17, 18,
