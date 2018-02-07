@@ -4,6 +4,7 @@
   "description": "JavaScript bindings for NTRU cryptography",
   "main": "main.js",
   "scripts": {
+    "preinstall": "./build_ntru",
     "install": "(node install.js) || (exit 0)",
     "test": "mocha --reporter spec test/*-spec.js"
   },
